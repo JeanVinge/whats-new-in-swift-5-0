@@ -1,7 +1,7 @@
 /*:
  [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
 
- ## Checking for integer multiples
+ ## Checkando por multiplos de inteiros
 
  [SE-0225](https://github.com/apple/swift-evolution/blob/master/proposals/0225-binaryinteger-iseven-isodd-ismultiple.md) adiciona o método `isMultiple(of:)` para inteiros, nos permitindo checkar quando um numero é multiplo de outro de uma forma muito mais clara do que usando o resto da divisão, com o operador `%`.
 

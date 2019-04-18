@@ -29,8 +29,7 @@
     let str = ##"Meu cachorro falou "woof"#gooddog"##
 /*:
 
- Observe como o número de simbolos de hashes no final deve corresponder ao número do início.
-     As strings raw são totalmente compatíveis com o sistema de strings multi-line - apenas use `"""#` para iniciar e depois `"""#` no final, assim:
+ Observe como o número de simbolos de hashes no final deve corresponder ao número do início. As strings raw são totalmente compatíveis com o sistema de strings multi-line - apenas use `"""#` para iniciar e depois `"""#` no final, assim:
 */
     let multiline = #"""
     A resposta da vida,

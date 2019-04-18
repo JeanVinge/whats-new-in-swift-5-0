@@ -6,7 +6,7 @@
 
  * Última atualização: 18 de abril de 2019
 
- Este playground foi feito para mostrar as novidades introduzidas no Swift 5.0. [Artigo original](https://www.hackingwithswift.com/articles/126/whats-new-in-swift-5-0), porem é muito mais divertido ver as coisas em ação e poder você mesmo experimentar.
+ Este [playground](https://github.com/twostraws/whats-new-in-swift-5-0) foi feito para mostrar as novidades introduzidas no Swift 5.0. Paul Hudson já escreveu um [artigo](https://www.hackingwithswift.com/articles/126/whats-new-in-swift-5-0), porem é muito mais divertido ver as coisas em ação e poder você mesmo experimentar.
  &nbsp;
 
  ## Capitulos

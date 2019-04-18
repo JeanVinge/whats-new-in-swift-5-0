@@ -1,11 +1,11 @@
 /*:
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
 
  ## Checking for integer multiples
 
- [SE-0225](https://github.com/apple/swift-evolution/blob/master/proposals/0225-binaryinteger-iseven-isodd-ismultiple.md) adds an `isMultiple(of:)` method to integers, allowing us to check whether one number is a multiple of another in a much clearer way than using the division remainder operation, `%`.
+ [SE-0225](https://github.com/apple/swift-evolution/blob/master/proposals/0225-binaryinteger-iseven-isodd-ismultiple.md) adiciona o método `isMultiple(of:)` para inteiros, nos permitindo checkar quando um numero é multiplo de outro de uma forma muito mais clara do que usando o resto da divisão, com o operador `%`.
 
- For example:
+ Por exemplo:
 */
     let rowNumber = 4
     
@@ -15,9 +15,9 @@
         print("Odd")
     }
 /*:
- Yes, we could write the same check using `if rowNumber % 2 == 0` but you have to admit that’s less clear – having `isMultiple(of:)` as a method means it can be listed in code completion options in Xcode, which aids discoverability.
+ Sim, nos podemos escrever a mesma checkagem  usando `if rowNumber % 2 == 0` mas você tem que adimitir que é menos limpo – ter `isMultiple(of:)` como um método significa que ele pode ser listado no code completion do Xcode, que ajuda encontrá-lo.
  
  &nbsp;
 
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
  */

@@ -12,13 +12,13 @@
  ## Capitulos
 
  * [Raw strings](Raw%20strings)
- * [A standard Result type](A%20standard%20Result%20type)
- * [Customizing string interpolation](Customizing%20string%20interpolation)
+ * [Result type](A%20standard%20Result%20type)
+ * [Customizando string interpolation](Customizing%20string%20interpolation)
  * [Dynamically callable types](Dynamically%20callable%20types)
- * [Handling future enum cases](Handling%20future%20enum%20cases)
- * [Flattening nested optionals resulting from try?](Flattening%20nested%20optionals%20resulting%20from%20try%3F)
- * [Checking for integer multiples](Checking%20for%20integer%20multiples)
- * [Transforming and unwrapping dictionary values with compactMapValues()](Transforming%20and%20unwrapping%20dictionary%20values)
+ * [Tratando enum future cases](Handling%20future%20enum%20cases)
+ * [Flattening optionals aninhados resultantes de try?](Flattening%20nested%20optionals%20resulting%20from%20try%3F)
+ * [Checkando por multiplos de inteiros](Checking%20for%20integer%20multiples)
+ * [Transformando e desempacotando valores de dicionários com compactMapValues()](Transforming%20and%20unwrapping%20dictionary%20values)
 
  &nbsp;
  

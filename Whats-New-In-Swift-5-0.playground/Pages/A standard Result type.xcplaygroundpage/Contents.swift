@@ -118,11 +118,4 @@ let mapResult = result2.map { calculateFactors(for: $0) }
      Assim como com os opcionais, é aqui que o método `flatMap()` entra. Se *closure* transformada retorna um `Result`, `flatMap()` retornará o novo` Result` diretamente, em vez de trazer dentro de outro `Result`:
 */
 let flatMapResult = result2.flatMap { calculateFactors(for: $0) }
-/*:
- Então, onde `mapResult` era um `Result <Result <Int, FactorError>, FactorError>`, o `flatMapResult` é achatado em `Result <Int, FactorError>` - o primeiro valor de sucesso original (um número aleatório) foi transformado em um novo valor de sucesso (o número de fatores). Assim como `map()`, se o `Result` for uma falha, o` flatMapResult` também será uma falha.
 
-     Quanto a `mapError()` e `flatMapError()`, eles fazem coisas semelhantes, exceto que eles transformam o valor *Error* em vez do valor *success*.
- &nbsp;
-
- [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
- */

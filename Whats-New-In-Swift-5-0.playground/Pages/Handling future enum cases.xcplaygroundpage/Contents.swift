@@ -1,15 +1,15 @@
 /*:
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
 
- ## Handling future enum cases
+ ## Tratando enum future cases
 
- [SE-0192](https://github.com/apple/swift-evolution/blob/master/proposals/0192-non-exhaustive-enums.md) adds the ability to distinguish between enums that are fixed and enums that might change in the future.
+ [SE-0192](https://github.com/apple/swift-evolution/blob/master/proposals/0192-non-exhaustive-enums.md) adiciona a habilidade de distinguir entre enums que são fixos e enums que podem mudar no futuro.
 
- One of Swift’s security features is that it requires all switch statements to be exhaustive – that they must cover all cases. While this works well from a safety perspective, it causes compatibility issues when new cases are added in the future: a system framework might send something different that you hadn’t catered for, or code you rely on might add a new case and cause your compile to break because your switch is no longer exhaustive.
+ Uma das features de segurança do Swift é que todos os cases do enum devem ser exaustivos – que eles devem cobrir todos os cases. Enquanto isso funciona bem em uma perspectiva segura, isso causa problemas de compatibilidade quando novos casos são adicionados no futuro: um framework pode enviar algo diferente daquilo que você esperava, ou um codigo que você esta contando com ele talvez adicione um case novo causando um erro de compilação por que seu enum ja não ;e mais exaustivo.
 
- With the `@unknown` attribute we can now distinguish between two subtly different scenarios: “this default case should be run for all other cases because I don’t want to handle them individually,” and “I want to handle all cases individually, but if anything comes up in the future use this rather than causing an error.”
+ Com o atributo `@unknown` nós podemos distinguir sutilmente entre dois cenários: “O case default deve rodar para todos os outros cases por que não quero tratar eles individualmente” e “ eu quero tratar todos os casos individualmente, mas se alguma coisa vier no futuro use isto ao invés de causar um erro”.
 
- Here’s an example enum:
+ Aqui um exemplo de enum:
 */
     enum PasswordError: Error {
         case short
@@ -17,7 +17,7 @@
         case simple
     }
 /*:
- We could write code to handle each of those cases using a `switch` block:
+ Nós podemos escrever um código para tratar cada case usando um `switch`:
 */
     func showOld(error: PasswordError) {
         switch error {
@@ -30,13 +30,13 @@
         }
     }
 /*:
- That uses two explicit cases for short and obvious passwords, but bundles the third case into a default block. 
+ Ele usa dois ceses específicos para senhas pequenas e obvias, mas trata o terceiro dentro do case default. 
 
- Now, if in the future we added a new case to the enum called `old`, for passwords that had been used previously, our `default` case would automatically be called even though its message doesn’t really make sense – the password might not be too simple.
+ Agora, se no futuro nos adicionarmos um case chamado `old`, para senhas que foram utilizadas anteriormente, nosso case `default` sera automaticamente chamado mesmo que a mensagem não faça sentido – a senha não pode ser muito simples.
 
- Swift can’t warn us about this code because it’s technically correct (the best kind of correct), so this mistake would easily be missed. Fortunately, the new `@unknown` attribute fixes it perfectly – it can be used only on the `default` case, and is designed to be run when new cases come along in the future.
+ Swift não pode nos alertar sobre isso por que está tecnicamente correto, então esse erro seria facilmente perdido. Felizmente, o novo atributo `@unknown` corrige isso perfeitamente – só pode ser usado no case `default`, e é pensado pra rodar novos cases que possam vir a ter no futuro.
 
- For example:
+ Por exemplo:
 */
     func showNew(error: PasswordError) {
         switch error {
@@ -49,9 +49,9 @@
         }
     }
 /*:
- That code will now issue warnings because the `switch` block is no longer exhaustive – Swift wants us to handle each case explicitly. Helpfully this is only a *warning*, which is what makes this attribute so useful: if a framework adds a new case in the future you’ll be warned about it, but it won’t break your source code.
+ O código agora terá um warning por que o `switch` não é mais exaustivo – Swift quer que nos tratemos cada case explicitamente. Felizmente isso é apenas um *warning*, o que é o que faz esse atributo ser tão útil: se um framework adicionar um case no futuro você será alertado sobre isso, mas não quebrará seu código fonte.
  
  &nbsp;
 
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
  */

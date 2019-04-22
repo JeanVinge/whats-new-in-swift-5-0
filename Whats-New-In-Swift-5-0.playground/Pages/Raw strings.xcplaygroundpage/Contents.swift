@@ -1,52 +1,54 @@
 /*:
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
 
  ## Raw strings
+ [SE-0200](https://github.com/apple/swift-evolution/blob/master/proposals/0200-raw-string-escaping.md) adicionado habilidade de criar *raw strings*, onde barras invertidas e aspas são interpretadas como simbolos literais ao inves de *characters* de *escape*. Isso faz com que o número de caso de uso seja mais facil, portanto expressões regulares irão se beneficiar.
 
- [SE-0200](https://github.com/apple/swift-evolution/blob/master/proposals/0200-raw-string-escaping.md) added the ability to create raw strings, where backslashes and quote marks are interpreted as those literal symbols rather than escapes characters or string terminators. This makes a number of use cases more easy, but regular expressions in particular will benefit.
-
- To use raw strings, place one or more `#` symbols before your strings, like this:
+ Para usar *raw strings*, coloque um ou mais `#` antes da sua string, como abaixo:
 */
-    let rain = #"The "rain" in "Spain" falls mainly on the Spaniards."#
+    let rain = #"A "chuva" na "Espanha" cai principalmente sobre os Espanhóis"#
 /*:
- The `#` symbols at the start and end of the string become part of the string delimiter, so Swift understands that the standalone quote marks around “rain” and “Spain” should be treated as literal quote marks rather than ending the string.
+ Os `#` do inicio e ao final tornam-se parte de delimitadores da string, então o Swift entende que as aspas em torno de “chuva” e “Espanha” deveriam ser tratadas como marcas de citações literais em vez de terminador da string.
 
- Raw strings allow you to use backslashes too:
+ *Raw strings* também aceita usar barras invertidas:
 */
-    let keypaths = #"Swift keypaths such as \Person.name hold uninvoked references to properties."#
+    let keypaths = #"Keypaths como \Person.name mantem referencia de propriedades."#
 /*:
- That treats the backslash as being a literal character in the string, rather than an escape character. This in turn means that string interpolation works differently:
+ Deste modo a barra invertida é tratada como um *literal character* na string, ao inves de *character* de *escape*.
 */
+
     let answer = 42
-    let dontpanic = #"The answer to life, the universe, and everything is \#(answer)."#
-/*:
- Notice how I’ve used `\#(answer)` to use string interpolation – a regular `\(answer)` will be interpreted as characters in the string, so when you want string interpolation to happen in a raw string you must add the extra `#`.
+    let dontpanic = #"A resposta da vida, do universo, e de tudo é \#(answer)."#
 
- One of the interesting features of Swift’s raw strings is the use of hash symbols at the start and end, because you can use more than one in the unlikely event you’ll need to. It’s hard to provide a good example here because it really ought to be extremely rare, but consider this string: **My dog said "woof"#gooddog**. Because there’s no space before the hash, Swift will see `"#` and immediately interpret it as the string terminator. In this situation we need to change our delimiter from `#"` to `##"`, like this:
+/*:
+ Observe como é usado `\#(answer)` para reconhecer a *string interpolation* - uma `\(answer)` regular será interpretada como character na string, então quando você quer que aconteça a *string interpolation* voce adiciona um `#` extra.
+
+ Um dos recursos interessantes de *raw strings* do Swift é o uso de símbolos de hash no início e no final, pois você pode usar mais de um no caso improvável de ser necessário. É difícil fornecer um bom exemplo aqui, porque realmente deveria ser extremamente raro, mas considere esta sequência: **Meu cachorro disse "woof" #gooddog**.
+ Como não há espaço antes do hash, o Swift verá `#` e imediatamente o interpretará como o terminador de string. Nesta situação, precisamos alterar nosso delimitador de `#` para `##`, desta forma:
 */
-    let str = ##"My dog said "woof"#gooddog"##
+    let str = ##"Meu cachorro falou "woof"#gooddog"##
 /*:
- Notice how the number of hashes at the end must match the number at the start.
 
- Raw strings are fully compatible with Swift’s multi-line string system – just use `#"""` to start, then `"""#` to end, like this:
+ Observe como o número de simbolos de hashes no final deve corresponder ao número do início. As strings raw são totalmente compatíveis com o sistema de strings multi-line - apenas use `"""#` para iniciar e depois `"""#` no final, assim:
 */
     let multiline = #"""
-    The answer to life,
-    the universe,
-    and everything is \#(answer).
+    A resposta da vida,
+    do universo,
+    e de tudo é \#(answer).
     """#
 /*:
- Being able to do without lots of backslashes will prove particularly useful in regular expressions. For example, writing a simple regex to find keypaths such as `\Person.name` used to look like this:
+
+ Ser capaz de fazer expressões regulares sem muitas barras invertidas será particularmente útil. Por exemplo, escrever um regex simples para localizar *keypaths* como `\Person.name`, costumava ficar assim:
 */
     let regex1 = "\\\\[A-Z]+[A-Za-z]+\\.[a-z]+"
 /*:
- Thanks to raw strings we can write the same thing with half the number of backslashes:
+ Graças a *raw strings*, podemos escrever a mesma coisa com metade do número de barras invertidas:
 */
     let regex2 = #"\\[A-Z]+[A-Za-z]+\.[a-z]+"#
 /*:
- We still need *some*, because regular expressions use them too.
+ Ainda precisamos de *algumas*, porque expressões regulares também os usam.
  
  &nbsp;
 
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
  */

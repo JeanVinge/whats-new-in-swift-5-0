@@ -77,7 +77,7 @@ extension String.StringInterpolation {
 }
 
 let names = ["Harry", "Ron", "Hermione"]
-print("List of students: \(names, empty: "No one").")
+print("Lista de estudantes: \(names, empty: "Ninguem").")
 /*:
  Usar `@autoclosure` significa que podemos usar valores simples ou chamar funções complexas para o valor padrão, mas nada disso será feito a menos que `values.count` seja zero.
 
@@ -97,42 +97,35 @@ print("List of students: \(names, empty: "No one").")
 */
 struct HTMLComponent: ExpressibleByStringLiteral, ExpressibleByStringInterpolation, CustomStringConvertible {
     struct StringInterpolation: StringInterpolationProtocol {
-        // start with an empty string
+
         var output = ""
 
-        // allocate enough space to hold twice the amount of literal text
         init(literalCapacity: Int, interpolationCount: Int) {
             output.reserveCapacity(literalCapacity * 2)
         }
 
-        // a hard-coded piece of text – just add it
         mutating func appendLiteral(_ literal: String) {
-            print("Adicionando \(literal)")
+            print("Anexando \(literal)")
             output.append(literal)
         }
 
-        // a Twitter username – add it as a link
         mutating func appendInterpolation(twitter: String) {
-            print("Adicionando \(twitter)")
+            print("Anexando \(twitter)")
             output.append("<a href=\"https://twitter/\(twitter)\">@\(twitter)</a>")
         }
 
-        // an email address – add it using mailto
         mutating func appendInterpolation(email: String) {
-            print("Adicionando \(email)")
+            print("Anexando \(email)")
             output.append("<a href=\"mailto:\(email)\">\(email)</a>")
         }
     }
 
-    // the finished text for this whole component
     let description: String
 
-    // create an instance from a literal string
     init(stringLiteral value: String) {
         description = value
     }
 
-    // create an instance from an interpolated string
     init(stringInterpolation: StringInterpolation) {
         description = stringInterpolation.output
     }
@@ -140,10 +133,10 @@ struct HTMLComponent: ExpressibleByStringLiteral, ExpressibleByStringInterpolati
 /*:
 Agora podemos criar e usar uma instância de `HTMLComponent` usando a *string interpolation* como esta:
 */
- let text: HTMLComponent = "Você deveria me seguir no twitter \(twitter: "twostraws"), ou me mandar email em \(email: "paul@hackingwithswift.com")."
+ let text: HTMLComponent = "Você deve me seguir no twitter \(twitter: "twostraws"), ou você pode me enviar um e-mail em \(email: "paul@hackingwithswift.com")."
  print(text)
 /*:
- Graças às chamadas `print()` que foram espalhadas por dentro, você verá exatamente como funciona a funcionalidade de *string interpolation*: você verá “Anexando Você deve me seguir no Twitter”, “Anexando twostraws”, “Adicionando você pode me enviar um e-mail em “,“ Adicionando paul@hackingwithswift.com ”e, finalmente,“ Adicionando. ”- cada parte aciona uma chamada de método e é adicionada à nossa string.
+ Graças às chamadas `print()` que foram espalhadas por dentro, você verá exatamente como funciona a funcionalidade de *string interpolation*: você verá “Anexando Você deve me seguir no Twitter”, “Anexando twostraws”, “Anexando você pode me enviar um e-mail em “, “Anexando paul@hackingwithswift.com” e, finalmente, “Anexando .”- cada parte aciona uma chamada de método e é adicionada à nossa string.
 
  &nbsp;
 

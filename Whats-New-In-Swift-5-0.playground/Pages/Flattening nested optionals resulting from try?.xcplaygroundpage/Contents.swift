@@ -1,11 +1,11 @@
 /*:
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
 
- ## Flattening nested optionals resulting from try?
+ ## Flattening optionals aninhados resultantes de try?
 
- [SE-0230](https://github.com/apple/swift-evolution/blob/master/proposals/0230-flatten-optional-try.md) modifies the way `try?` works so that nested optionals are flattened to become regular optionals. This makes it work the same way as optional chaining and conditional typecasts, both of which flatten optionals in earlier Swift versions.
+ [SE-0230](https://github.com/apple/swift-evolution/blob/master/proposals/0230-flatten-optional-try.md) modifica o modo que o `try?` funciona, então nested optionals são flattened para se tornarem optionals regulares. Isso faz ele trabalhar da mesma forma que optional chaining e conditional typecasts, ambos produzem flatten optionals em versões anteriores do Swift.
 
- Here’s a practical example that demonstrates the change:
+ Aqui um exemplo prático que demonstra a mudança:
 */
 struct User {
     var id: Int
@@ -19,7 +19,7 @@ struct User {
     }
 
     func getMessages() throws -> String {
-        // complicated code here
+        // codigo complicado aqui
         return "No messages"
     }
 }
@@ -27,13 +27,13 @@ struct User {
 let user = User(id: 1)
 let messages = try? user?.getMessages()
 /*:
- The `User` struct has a failable initializer, because we want to make sure folks create users with a valid ID. The `getMessages()` method would in theory contain some sort of complicated code to get a list of all the messages for the user, so it’s marked as `throws`; I’ve made it return a fixed string so the code compiles.
+ A struct `User` tem um inicializador falhável, por causa disso nós queremos ter certeza que estamos criando um usuário com um ID válido. O método `getMessages()` iria conter algum tipo de código complicado para pegar a lista de todas as mensagens para o usuário, então está marcado como `throws`; Eu fiz ele retornar uma string fixa pra que o código compilasse.
 
- The key line is the last one: because the user is optional it uses optional chaining, and because `getMessages()` can throw it uses `try?` to convert the throwing method into an optional, so we end up with a nested optional. In Swift 4.2 and earlier this would make `messages` a `String??` – an optional optional string – but in Swift 5.0 and later `try?` won’t wrap values in an optional if they are already optional, so `messages` will just be a `String?`.
+ A linha chave é a última: por que user é optional ele usa optional chaining, e por que `getMessages()` pode dar throw ele usa `try?` para converter o método throwing para um optional, então nos acabamos tendo um optional aninhado. No Swift 4.2 e anteriores, isso faria que `messages` fosse `String??` – Um optional optional string – mas no Swift 5.0 e posteriores `try?` não irá embrulhar valores em um optional se ele já for um optional, então `messages` será simplesmente `String?`.
 
- This new behavior matches the existing behavior of optional chaining and conditional typecasting. That is, you could use optional chaining a dozen times in a single line of code if you wanted, but you wouldn’t end up with 12 nested optionals. Similarly, if you used optional chaining with `as?`, you would still end up with only one level of optionality, because that’s usually what you want.
+ Esse novo comportamento é igual ao comportamento de optional chaining e conditional typecasting. Isto é, você teria de usar optional chaining muitas vezes em uma unica linha de código se quisesse, mas você não acabaria por ter vários nested optionals. Similar a isso, se você usasse optional chaining com `as?`, você ainda assim terminaria com um level de optionality, por que geralmente é isso que você quer.
  
  &nbsp;
 
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
  */

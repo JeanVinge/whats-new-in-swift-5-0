@@ -1,11 +1,11 @@
 /*:
- [< Previous](@previous)           [Home](Introduction)
+ [< Anterior](@previous)           [Home](Introduction)
 
- ## Transforming and unwrapping dictionary values with compactMapValues()
+ ## Transformando e desempacotando valores de dicionários com compactMapValues()
 
- [SE-0218](https://github.com/apple/swift-evolution/blob/master/proposals/0218-introduce-compact-map-values.md) adds a new `compactMapValues()` method to dictionaries, bringing together the `compactMap()` functionality from arrays (“transform my values, unwrap the results, then discard anything that’s nil”) with the `mapValues()` method from dictionaries (“leave my keys intact but transform my values”).
+ [SE-0218](https://github.com/apple/swift-evolution/blob/master/proposals/0218-introduce-compact-map-values.md) adiciona um novo método `compactMapValues()` para dicionários, juntando a funcionalidade `compactMap()` dos arrays (“transforme meus valores, desempacote os resultados, então descarte tudo que for nulo”) com o método `mapValues()` dos dicionários (“deixe minhas chaves intactas mas transforme meus valores”).
 
- As an example, here’s a dictionary of people in a race, along with the times they took to finish in seconds. One person did not finish, marked as “DNF”:
+ Um exemplo, aqui está um dicionário de pessoas em uma corrida, juntamente com os tempos que eles levaram pra finalizar em segundos. Uma pessoa não terminou, marcada como “DNF”:
 */
     let times = [
         "Hudson": "38",
@@ -14,15 +14,15 @@
         "Hartis": "DNF"
     ]
 /*:
-We can use `compactMapValues()` to create a new dictionary with names and times as an integer, with the one DNF person removed:
+Nos podemos usar `compactMapValues()` para criar um novo dicionário com nomes e tempos como inteiros, com a pessoa DNF sendo removida:
 */
     let finishers1 = times.compactMapValues { Int($0) }
 /*:
-Alternatively, you could just pass the `Int` initializer directly to `compactMapValues()`, like this:
+Como alternativa, você pode passar apenas o inicializador de `Int` diretamente para `compactMapValues()`, assim:
 */
     let finishers2 = times.compactMapValues(Int.init)
 /*:
-You can also use `compactMapValues()` to unwrap optionals and discard nil values without performing any sort of transformation, like this:
+Você também pode usar `compactMapValues()` para desempacotar optionals e descrtar valores nulos sem precisar fazer nenhuma transformação de ordenação, assim:
 */
     let people = [
         "Paul": 38,
@@ -33,5 +33,5 @@ You can also use `compactMapValues()` to unwrap optionals and discard nil values
     
     let knownAges = people.compactMapValues { $0 }
 /*:
- [< Previous](@previous)           [Home](Introduction)
+ [< Anterior](@previous)           [Home](Introduction)
  */

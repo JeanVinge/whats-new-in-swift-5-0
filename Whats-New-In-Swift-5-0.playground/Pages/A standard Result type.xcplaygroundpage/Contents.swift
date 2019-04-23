@@ -1,21 +1,21 @@
 /*:
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
+ [< Anterior](@previous)           [Home](Introduction)           [Próximo >](@next)
 
- ## A standard Result type
+ ## Result type
 
- [SE-0235](https://github.com/apple/swift-evolution/blob/master/proposals/0235-add-result.md) introduces a `Result` type into the standard library, giving us a simpler, clearer way of handling errors in complex code such as asynchronous APIs.
+ [SE-0235](https://github.com/apple/swift-evolution/blob/master/proposals/0235-add-result.md) Adiciona um tipo `Result` na biblioteca padrão, dando uma maneira mais simples e clara de lidar com erros em códigos complexos, como APIs assíncronas.
 
- Swift’s `Result` type is implemented as an enum that has two cases: `success` and `failure`. Both are implemented using generics so they can have an associated value of your choosing, but `failure` must be something that conforms to Swift’s `Error` type.
+ O tipo `Result` é implementado com um enum de dois casos: `success` e `failure`. Ambos são implementados usando *generics* para que eles possam ter um valor associado à sua escolha, mas em caso de `falha` deverá se adequar com o protocolo do tipo `Error` do Swift.
 
- To demonstrate `Result`, we could write a function that connects to a server to figure out how many unread messages are waiting for the user. In this example code we’re going to have just one possible error, which is that the requested URL string isn’t a valid URL:
+ Para demonstrar `Result`, poderíamos escrever uma função que se conecta a um servidor para descobrir quantas mensagens não lidas estão sendo esperadas pelo usuário. Neste código de exemplo, teremos apenas um possível erro, ou seja, a URL solicitada não é um URL válido:
 */
 enum NetworkError: Error {
     case badURL
 }
 /*:
- The fetching function will accept a URL string as its first parameter, and a completion handler as its second parameter. That completion handler will itself accept a `Result`, where the success case will store an integer, and the failure case will be some sort of `NetworkError`. We’re not actually going to connect to a server here, but using a completion handler at least lets us simulate asynchronous code.
+ A função de busca aceita uma string de URL como seu primeiro parâmetro e um bloco de execução assincrono, como seu segundo parâmetro. Esse bloco de execução irá aceitar um `Result`, onde o caso de sucesso armazenará um inteiro, e o caso de falha será algum tipo de `NetworkError`. Na verdade, não vamos nos conectar a um servidor aqui, mas usar um bloco de execução, pelo menos, nos permite simular um código assíncrono.
 
- Here’s the code:
+ Segue o código:
 */
 import Foundation
 
@@ -24,13 +24,11 @@ func fetchUnreadCount1(from urlString: String, completionHandler: @escaping (Res
         completionHandler(.failure(.badURL))
         return
     }
-
-    // complicated networking code here
-    print("Fetching \(url.absoluteString)...")
+    print("Buscando \(url.absoluteString)...")
     completionHandler(.success(5))
 }
 /*:
- To use that code we need to check the value inside our `Result` to see whether our call succeeded or failed, like this:
+Para usar esse código, precisamos verificar o valor dentro de nosso `Result` para ver se nossa chamada foi bem-sucedida ou não, assim:
 */
 fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
     switch result {
@@ -41,9 +39,9 @@ fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
     }
 }
 /*:
- There are three more things you ought to know before you start using `Result` in your own code.
+ Existem mais três coisas que você deve saber antes de começar a usar o `Result` no seu próprio código.
 
- First, `Result` has a `get()` method that either returns the successful value if it exists, or throws its error otherwise. This allows you to convert `Result` into a regular throwing call, like this:
+     Primeiro, o `Result` tem um método `get()` que retorna o valor de sucesso, se existir, ou lança seu erro de outra forma. Isso permite que você converta `Result` em uma chamada comum, assim:
 */
 fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
     if let count = try? result.get() {
@@ -51,37 +49,35 @@ fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
     }
 }
 /*:
- Second, `Result` has an initializer that accepts a throwing closure: if the closure returns a value successfully that gets used for the `success` case, otherwise the thrown error is  placed into the `failure` case.
+Segundo, `Result` tem um inicializador que aceita um encerramento de lançamento: se o encerramento retornar um valor que seja usado com sucesso para o caso de `success`, caso contrário, o erro lançado é colocado no caso de `failure`.
 
- For example:
+ Por exemplo:
 */
 let result = Result { try String(contentsOfFile: someFile) }
 /*:
- Third, rather than using a specific error enum that you’ve created, you can also use the general `Error` protocol. In fact, the Swift Evolution proposal says “it's expected that most uses of Result will use `Swift.Error` as the `Error` type argument.”
+ Em terceiro lugar, em vez de usar um erro específico que você criou, você também pode usar o protocolo geral `Error`. De fato, a proposta do Swift Evolution diz que "é esperado que a maioria dos usos do Result use o `Swift.Error` como o argumento do tipo `Error`".
 
- So, rather than using `Result<Int, NetworkError>` you could use `Result<Int, Error>`. Although this means you lose the safety of typed throws, you gain the ability to throw a variety of different error enums – which you prefer really depends on your coding style.
-
+ Então, ao invés de usar `Result <Int, NetworkError>` você poderia usar `Result <Int, Error>`. Embora isso signifique perder a segurança dos *throws* tipados, você ganha a capacidade de lançar uma variedade de enums de erros diferentes - o que você preferir realmente depende do seu estilo de codificação.
  
-  ## Transforming Result
+  ## Transformando Result
 
- `Result` has four other methods that may prove useful: `map()`, `flatMap()`, `mapError()`, and `flatMapError()`. Each of these give you the ability to transform either the success or error somehow, and the first two work similarly to the methods of the same name on `Optional`.
+ `Result` tem quatro outros métodos que podem ser úteis: `map()`, `flatMap()`, `mapError()` e `flatMapError()`. Cada uma deles dá a você a capacidade de transformar o sucesso ou o erro de alguma forma, e os dois primeiros funcionam de forma semelhante aos métodos do mesmo nome em `Optional`.
 
- The `map()` method looks inside the `Result`, and transforms the success value into a different kind of value using a closure you specify. However, if it finds failure instead, it just uses that directly and ignores your transformation.
+   O método `map()` procura dentro do `Result` e transforma o valor de sucesso em um tipo diferente de valor usando uma *closure* que você especificar. No entanto, se ele encontrar falha, ele usa isso diretamente e ignora sua transformação.
 
- To demonstrate this, we’re going to write some code that generates random numbers between 0 and a maximum then calculate the factors of that number. If the user requests a random number below zero, or if the number happens to be prime – i.e., it has no factors except itself and 1 – then we’ll consider those to be failures.
+   Para demonstrar isso, vamos escrever um código que gera números aleatórios entre 0 e um número máximo e, em seguida, calcula os fatores desse número. Se o usuário solicitar um número aleatório abaixo de zero, ou se o número for primo, ou seja, ele não tiver fatores, exceto ele próprio e 1, consideraremos esses fatores como falhas.
 
- We might start by writing code to model the two possible failure cases: the user has tried to generate a random number below 0, and the number that was generated was prime:
+   Podemos começar escrevendo código para modelar os dois possíveis casos de falha: o usuário tentou gerar um número aleatório abaixo de 0 e o número gerado foi primo:
 */
 enum FactorError: Error {
     case belowMinimum
     case isPrime
 }
 /*:
- Next, we’d write a function that accepts a maximum number, and returns either a random number or an error:
+Em seguida, escrevemos uma função que aceita um número máximo e retorna um número aleatório ou um erro:
 */
 func generateRandomNumber(maximum: Int) -> Result<Int, FactorError> {
     if maximum < 0 {
-        // creating a range below 0 will crash, so refuse
         return .failure(.belowMinimum)
     } else {
         let number = Int.random(in: 0...maximum)
@@ -89,18 +85,18 @@ func generateRandomNumber(maximum: Int) -> Result<Int, FactorError> {
     }
 }
 /*
- When that’s called, the `Result` we get back will either be an integer or an error, so we could use `map()` to transform it:
+Quando isso é chamado, o resultado que retornamos será um inteiro ou um erro, então poderíamos usar o `map()` para transformá-lo:
 */
  let result1 = generateRandomNumber(maximum: 11)
  let stringNumber = result1.map { "The random number is: \($0)." }
 /*:
- As we’ve passed in a valid maximum number, `result` will be a success with a random number. So, using `map()` will take that random number, use it with our string interpolation, then return another `Result` type, this time of the type `Result<String, FactorError>`.
+ À medida que passamos em um número máximo válido, `Result` será um sucesso com um número aleatório. Então, usando `map()` pegaremos esse número aleatório, e usaremos *string interpolation* então retornaremos outro tipo de `Result`, desta vez do tipo `Result <String, FactorError>`.
 
- However, if we had used `generateRandomNumber(maximum: -11)` then `result` would be set to the failure case with `FactorError.belowMinimum`. So, using `map()` would still return a `Result<String, FactorError>`, but it would have the same failure case and same `FactorError.belowMinimum` error.
+   No entanto, se tivéssemos usado `generateRandomNumber (maximum: -11)` então `Result` seria configurado para o caso de falha com `FactorError.belowMinimum`. Então, usando `map()` ainda retornaria um `Result <String, FactorError>`, mas ele teria o mesmo caso de falha e o mesmo erro `FactorError.belowMinimum`.
 
- Now that you’ve seen how `map()` lets us transform the success type to another type, let’s continue: we have a random number, so the next step is to calculate the factors for it. To do this, we’ll write another function that accepts a number and calculates its factors. If it finds the number is prime it will send back a failure `Result` with the `isPrime` error, otherwise it will send back the number of factors.
+   Agora que você viu como o `map()` nos permite transformar o tipo de sucesso em outro tipo, vamos continuar: temos um número aleatório, então o próximo passo é calcular os fatores para ele. Para fazer isso, escreveremos outra função que aceita um número e calcula seus fatores. Se achar que o número é primo, ele retornará uma falha `Result` com o erro `isPrime`, caso contrário ele retornará o número de fatores.
 
- Here’s that in code:
+   Aqui está em código:
 */
 func calculateFactors(for number: Int) -> Result<Int, FactorError> {
     let factors = (1...number).filter { number % $0 == 0 }
@@ -112,22 +108,14 @@ func calculateFactors(for number: Int) -> Result<Int, FactorError> {
     }
 }
 /*:
- If we wanted to use `map()` to transform the output of `generateRandomNumber()` using `calculateFactors()`, it would look like this:
+ Se quiséssemos usar `map()` para transformar a saída de `generateRandomNumber()` usando `calculateFactors()`, seria assim:
 */
 let result2 = generateRandomNumber(maximum: 10)
 let mapResult = result2.map { calculateFactors(for: $0) }
 /*:
- However, that make `mapResult` a rather ugly type: `Result<Result<Int, FactorError>, FactorError>`. It’s a `Result` inside another `Result`.
+ No entanto, isso faz do `mapResult` um tipo bastante feio: `Result <Result <Int, FactorError>, FactorError>`. É um `Result` dentro de outro `Result`.
 
- Just like with optionals, this is where the `flatMap()` method comes in. If your transform closure returns a `Result`, `flatMap()` will return the new `Result` directly rather than wrapping it in another `Result`:
+     Assim como com os opcionais, é aqui que o método `flatMap()` entra. Se *closure* transformada retorna um `Result`, `flatMap()` retornará o novo` Result` diretamente, em vez de trazer dentro de outro `Result`:
 */
 let flatMapResult = result2.flatMap { calculateFactors(for: $0) }
-/*:
- So, where `mapResult` was a `Result<Result<Int, FactorError>, FactorError>`, `flatMapResult` is flattened down into `Result<Int, FactorError>` – the first original success value (a random number) was transformed into a new success value (the number of factors). Just like `map()`, if either `Result` was a failure, `flatMapResult` will also be a failure.
 
- As for `mapError()` and `flatMapError()`, those do similar things except they transform the *error* value rather than the *success* value.
-
- &nbsp;
-
- [< Previous](@previous)           [Home](Introduction)           [Next >](@next)
- */

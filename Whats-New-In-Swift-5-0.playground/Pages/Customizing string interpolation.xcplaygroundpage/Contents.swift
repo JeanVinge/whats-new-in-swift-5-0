@@ -29,7 +29,7 @@ extension String.StringInterpolation {
  let user = User(name: "Guybrush Threepwood", age: 33)
  print("Detalhes do usuário: \(user)")
 /*:
- Isso vai imprimir **Detalhes do usuário: Meu nome é Guybrush Threepwood e tenho 33**, enquanto que com a *string interpolation* personalizada teria sido mosrrado **Detalhes do usuário: Usuário (nome: "Guybrush Threepwood", idade: 33)** É claro que essa funcionalidade não é diferente de apenas implementar o protocolo `CustomStringConvertible`, então vamos passar para usos mais avançados.
+ Isso vai imprimir **Detalhes do usuário: Meu nome é Guybrush Threepwood e eu tenho 33 anos**, enquanto que com a *string interpolation* personalizada teria sido mosrrado **Detalhes do usuário: Usuário (nome: "Guybrush Threepwood", idade: 33)** É claro que essa funcionalidade não é diferente de apenas implementar o protocolo `CustomStringConvertible`, então vamos passar para usos mais avançados.
 
  Seu método de *interpolation* personalizado pode levar quantos parâmetros forem necessários, rotulados ou não rotulados. Por exemplo, poderíamos adicionar uma *interpolation* para mostrar números usando vários estilos, como este:
 */

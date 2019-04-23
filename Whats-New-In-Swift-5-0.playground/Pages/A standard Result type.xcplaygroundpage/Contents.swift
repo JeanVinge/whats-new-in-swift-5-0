@@ -33,7 +33,7 @@ Para usar esse código, precisamos verificar o valor dentro de nosso `Result` pa
 fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
     switch result {
     case .success(let count):
-        print("\(count) unread messages.")
+        print("\(count) mensagens não lidas.")
     case .failure(let error):
         print(error.localizedDescription)
     }
@@ -45,7 +45,7 @@ fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
 */
 fetchUnreadCount1(from: "https://www.hackingwithswift.com") { result in
     if let count = try? result.get() {
-        print("\(count) unread messages.")
+        print("\(count) mensagens não lidas.")
     }
 }
 /*:
@@ -88,7 +88,7 @@ func generateRandomNumber(maximum: Int) -> Result<Int, FactorError> {
 Quando isso é chamado, o resultado que retornamos será um inteiro ou um erro, então poderíamos usar o `map()` para transformá-lo:
 */
  let result1 = generateRandomNumber(maximum: 11)
- let stringNumber = result1.map { "The random number is: \($0)." }
+ let stringNumber = result1.map { "O número aleatorio é: \($0)." }
 /*:
  À medida que passamos em um número máximo válido, `Result` será um sucesso com um número aleatório. Então, usando `map()` pegaremos esse número aleatório, e usaremos *string interpolation* então retornaremos outro tipo de `Result`, desta vez do tipo `Result <String, FactorError>`.
 

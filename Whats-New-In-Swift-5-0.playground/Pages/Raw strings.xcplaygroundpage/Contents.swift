@@ -26,7 +26,7 @@
  Um dos recursos interessantes de *raw strings* do Swift é o uso de símbolos de hash no início e no final, pois você pode usar mais de um no caso improvável de ser necessário. É difícil fornecer um bom exemplo aqui, porque realmente deveria ser extremamente raro, mas considere esta sequência: **Meu cachorro disse "woof" #gooddog**.
  Como não há espaço antes do hash, o Swift verá `#` e imediatamente o interpretará como o terminador de string. Nesta situação, precisamos alterar nosso delimitador de `#` para `##`, desta forma:
 */
-    let str = ##"Meu cachorro falou "woof"#gooddog"##
+let str = ###"Meu cachorro falou "woof"##gooddog"###
 /*:
 
  Observe como o número de simbolos de hashes no final deve corresponder ao número do início. As strings raw são totalmente compatíveis com o sistema de strings multi-line - apenas use `"""#` para iniciar e depois `"""#` no final, assim:
